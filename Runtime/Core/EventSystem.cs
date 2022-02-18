@@ -6,7 +6,13 @@ namespace GameWarriors.EventDomain.Core
     public class EventSystem : IEvent
     {
         private const int INITIALIZE_EVENT_ID = -1000;
-        private Messenger<int> _eventMessenger = new Messenger<int>();
+        private Messenger<int> _eventMessenger;
+
+        [UnityEngine.Scripting.Preserve]
+        public EventSystem()
+        {
+            _eventMessenger = new Messenger<int>();
+        }
 
         public void ListenToEvent(int messageId, Action callEvent)
         {
