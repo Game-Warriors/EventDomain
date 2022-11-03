@@ -1,9 +1,9 @@
 {
   "name": "com.gamewarriors.eventsystem",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "Event System",
   "description": "This package provide event listener and broadcaster base structure for objects communication",
-  "unity": "2019.1",
+  "unity": "2020.3",
   "unityRelease": "0b5",
   "dependencies": {
   },

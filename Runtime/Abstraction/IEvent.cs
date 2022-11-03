@@ -20,7 +20,7 @@ namespace GameWarriors.EventDomain.Abstraction
         void RemoveEventListener<T1, T2, T3, T4>(int messageId, Action<T1, T2, T3, T4> callEvent);
         void RemoveEventListener(int messageId, Action callEvent);
 
-        void ListenToInitializeEvent(Action<IServiceProvider> callEvent);
-        void BroadcastInitializeEvent(IServiceProvider inputValue);
+        void ListenToStartupEvent(Action<IServiceProvider> callEvent);
+        void BroadcastStartupEvent(IServiceProvider inputValue);
     }
 }

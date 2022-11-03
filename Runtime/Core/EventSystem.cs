@@ -5,7 +5,7 @@ namespace GameWarriors.EventDomain.Core
 {
     public class EventSystem : IEvent
     {
-        private const int INITIALIZE_EVENT_ID = -1000;
+        private const int STARTUP_EVENT_ID = -1000;
         private Messenger<int> _eventMessenger;
 
         [UnityEngine.Scripting.Preserve]
@@ -89,14 +89,14 @@ namespace GameWarriors.EventDomain.Core
             _eventMessenger.RemoveListener(messageId, callEvent);
         }
 
-        public void ListenToInitializeEvent(Action<IServiceProvider> callEvent)
+        public void ListenToStartupEvent(Action<IServiceProvider> callEvent)
         {
-            _eventMessenger.AddListener(INITIALIZE_EVENT_ID, callEvent);
+            _eventMessenger.AddListener(STARTUP_EVENT_ID, callEvent);
         }
 
-        public void BroadcastInitializeEvent(IServiceProvider inputValue)
+        public void BroadcastStartupEvent(IServiceProvider inputValue)
         {
-            _eventMessenger.Broadcast(INITIALIZE_EVENT_ID, inputValue);
+            _eventMessenger.Broadcast(STARTUP_EVENT_ID, inputValue);
         }
     }
 }
