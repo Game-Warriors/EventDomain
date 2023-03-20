@@ -132,7 +132,7 @@ namespace GameWarriors.EventDomain.Core
             }
         }
 
-        public void OnListenerRemoving(EventType eventType, Delegate listenerBeingRemoved)
+        public bool OnListenerRemoving(EventType eventType, Delegate listenerBeingRemoved)
         {
 #if LOG_ALL_MESSAGES
 		Debug.Log("MESSENGER OnListenerRemoving \t\"" + eventType + "\"\t{" + listenerBeingRemoved.Target + " -> " + listenerBeingRemoved.Method + "}");
@@ -140,6 +140,7 @@ namespace GameWarriors.EventDomain.Core
 
             if (eventTable.ContainsKey(eventType))
             {
+#if REMOVE_EXCEPTION
                 Delegate d = eventTable[eventType];
 
                 if (d == null)
@@ -150,11 +151,16 @@ namespace GameWarriors.EventDomain.Core
                 {
                     throw new ListenerException(string.Format("Attempting to remove listener with inconsistent signature for event type {0}. Current listeners have type {1} and listener being removed has type {2}", eventType, d.GetType().Name, listenerBeingRemoved.GetType().Name));
                 }
+#endif
+                return true;
             }
             else
             {
+#if REMOVE_EXCEPTION
                 throw new ListenerException(string.Format("Attempting to remove listener for type \"{0}\" but Messenger doesn't know about this event type.", eventType));
+#endif
             }
+            return false;
         }
 
         public void OnListenerRemoved(EventType eventType)
@@ -237,43 +243,63 @@ namespace GameWarriors.EventDomain.Core
 
         #region RemoveListener
         //No parameters
-        public void RemoveListener(EventType eventType, Action handler)
+        public bool RemoveListener(EventType eventType, Action handler)
         {
-            OnListenerRemoving(eventType, handler);
-            eventTable[eventType] = (Action)eventTable[eventType] - handler;
-            OnListenerRemoved(eventType);
+            if (OnListenerRemoving(eventType, handler))
+            {
+                eventTable[eventType] = (Action)eventTable[eventType] - handler;
+                OnListenerRemoved(eventType);
+                return true;
+            }
+            return false;
         }
 
         //Single parameter
-        public void RemoveListener<T>(EventType eventType, Action<T> handler)
+        public bool RemoveListener<T>(EventType eventType, Action<T> handler)
         {
-            OnListenerRemoving(eventType, handler);
-            eventTable[eventType] = (Action<T>)eventTable[eventType] - handler;
-            OnListenerRemoved(eventType);
+            if (OnListenerRemoving(eventType, handler))
+            {
+                eventTable[eventType] = (Action<T>)eventTable[eventType] - handler;
+                OnListenerRemoved(eventType);
+                return true;
+            }
+            return false;
         }
 
         //Two parameters
-        public void RemoveListener<T, U>(EventType eventType, Action<T, U> handler)
+        public bool RemoveListener<T, U>(EventType eventType, Action<T, U> handler)
         {
-            OnListenerRemoving(eventType, handler);
-            eventTable[eventType] = (Action<T, U>)eventTable[eventType] - handler;
-            OnListenerRemoved(eventType);
+            if (OnListenerRemoving(eventType, handler))
+            {
+                eventTable[eventType] = (Action<T, U>)eventTable[eventType] - handler;
+                OnListenerRemoved(eventType);
+                return true;
+            }
+            return false;
         }
 
         //Three parameters
-        public void RemoveListener<T, U, V>(EventType eventType, Action<T, U, V> handler)
+        public bool RemoveListener<T, U, V>(EventType eventType, Action<T, U, V> handler)
         {
-            OnListenerRemoving(eventType, handler);
-            eventTable[eventType] = (Action<T, U, V>)eventTable[eventType] - handler;
-            OnListenerRemoved(eventType);
+            if (OnListenerRemoving(eventType, handler))
+            {
+                eventTable[eventType] = (Action<T, U, V>)eventTable[eventType] - handler;
+                OnListenerRemoved(eventType);
+                return true;
+            }
+            return false;
         }
 
         //Four parameters
-        public void RemoveListener<T, U, V, W>(EventType eventType, Action<T, U, V, W> handler)
+        public bool RemoveListener<T, U, V, W>(EventType eventType, Action<T, U, V, W> handler)
         {
-            OnListenerRemoving(eventType, handler);
-            eventTable[eventType] = (Action<T, U, V, W>)eventTable[eventType] - handler;
-            OnListenerRemoved(eventType);
+            if (OnListenerRemoving(eventType, handler))
+            {
+                eventTable[eventType] = (Action<T, U, V, W>)eventTable[eventType] - handler;
+                OnListenerRemoved(eventType);
+                return true;
+            }
+            return false;
         }
 
         #endregion

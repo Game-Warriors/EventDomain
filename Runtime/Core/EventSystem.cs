@@ -64,29 +64,29 @@ namespace GameWarriors.EventDomain.Core
             _eventMessenger.Broadcast(messageId, inputValue1, inputValue2, inputValue3, inputValue4);
         }
 
-        public void RemoveEventListener<T1>(int messageId, Action<T1> callEvent)
+        public bool RemoveEventListener<T1>(int messageId, Action<T1> callEvent)
         {
-            _eventMessenger.RemoveListener<T1>(messageId, callEvent);
+            return _eventMessenger.RemoveListener<T1>(messageId, callEvent);
         }
 
-        public void RemoveEventListener<T1, T2>(int messageId, Action<T1, T2> callEvent)
+        public bool RemoveEventListener<T1, T2>(int messageId, Action<T1, T2> callEvent)
         {
-            _eventMessenger.RemoveListener<T1, T2>(messageId, callEvent);
+            return _eventMessenger.RemoveListener<T1, T2>(messageId, callEvent);
         }
 
-        public void RemoveEventListener<T1, T2, T3>(int messageId, Action<T1, T2, T3> callEvent)
+        public bool RemoveEventListener<T1, T2, T3>(int messageId, Action<T1, T2, T3> callEvent)
         {
-            _eventMessenger.RemoveListener<T1, T2, T3>(messageId, callEvent);
+            return _eventMessenger.RemoveListener<T1, T2, T3>(messageId, callEvent);
         }
 
-        public void RemoveEventListener<T1, T2, T3, T4>(int messageId, Action<T1, T2, T3, T4> callEvent)
+        public bool RemoveEventListener<T1, T2, T3, T4>(int messageId, Action<T1, T2, T3, T4> callEvent)
         {
-            _eventMessenger.RemoveListener<T1, T2, T3, T4>(messageId, callEvent);
+            return _eventMessenger.RemoveListener<T1, T2, T3, T4>(messageId, callEvent);
         }
 
-        public void RemoveEventListener(int messageId, Action callEvent)
+        public bool RemoveEventListener(int messageId, Action callEvent)
         {
-            _eventMessenger.RemoveListener(messageId, callEvent);
+            return _eventMessenger.RemoveListener(messageId, callEvent);
         }
 
         public void ListenToStartupEvent(Action<IServiceProvider> callEvent)
