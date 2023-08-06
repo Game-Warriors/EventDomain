@@ -3,12 +3,17 @@ using GameWarriors.EventDomain.Abstraction;
 
 namespace GameWarriors.EventDomain.Core
 {
+    /// <summary>
+    /// The class which provider all system event features
+    /// </summary>
     public class EventSystem : IEvent
     {
         private const int STARTUP_EVENT_ID = -1000;
         private Messenger<int> _eventMessenger;
 
+#if UNITY_2018_1_OR_NEWER
         [UnityEngine.Scripting.Preserve]
+#endif
         public EventSystem()
         {
             _eventMessenger = new Messenger<int>();

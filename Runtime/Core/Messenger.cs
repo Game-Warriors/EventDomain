@@ -31,11 +31,13 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameWarriors.EventDomain.Core
 {
-
+    /// <summary>
+    /// The core implementation of event container
+    /// </summary>
+    /// <typeparam name="EventType">The key type of the message container dictionary </typeparam>
     public class Messenger<EventType>
     {
         #region Internal variables
@@ -50,17 +52,17 @@ namespace GameWarriors.EventDomain.Core
         public Dictionary<EventType, Delegate> eventTable = new Dictionary<EventType, Delegate>();
 
         //Message handlers that should never be removed, regardless of calling Cleanup
-        public List<EventType> permanentMessages = new List<EventType>();
+        //public List<EventType> permanentMessages = new List<EventType>();
         #endregion
         #region Helper methods
         //Marks a certain message as permanent.
-        public void MarkAsPermanent(EventType eventType)
-        {
-#if LOG_ALL_MESSAGES
-		Debug.Log("Messenger MarkAsPermanent \t\"" + eventType + "\"");
-#endif
-            permanentMessages.Add(eventType);
-        }
+//        public void MarkAsPermanent(EventType eventType)
+//        {
+//#if LOG_ALL_MESSAGES
+//		Debug.Log("Messenger MarkAsPermanent \t\"" + eventType + "\"");
+//#endif
+//            permanentMessages.Add(eventType);
+//        }
 
 
         public void Cleanup()
@@ -75,15 +77,15 @@ namespace GameWarriors.EventDomain.Core
             {
                 bool wasFound = false;
 
-                foreach (EventType message in permanentMessages)
-                {
-                    //if (pair.Key == message)
-                    if (pair.Key.Equals(message))
-                    {
-                        wasFound = true;
-                        break;
-                    }
-                }
+                //foreach (EventType message in permanentMessages)
+                //{
+                //    //if (pair.Key == message)
+                //    if (pair.Key.Equals(message))
+                //    {
+                //        wasFound = true;
+                //        break;
+                //    }
+                //}
 
                 if (!wasFound)
                     messagesToRemove.Add(pair.Key);
@@ -100,17 +102,17 @@ namespace GameWarriors.EventDomain.Core
             eventTable.Remove(message);
         }
 
-        public void PrintEventTable()
-        {
-            Debug.Log("\t\t\t=== MESSENGER PrintEventTable ===");
+        //public void PrintEventTable()
+        //{
+        //    Debug.Log("\t\t\t=== MESSENGER PrintEventTable ===");
 
-            foreach (KeyValuePair<EventType, Delegate> pair in eventTable)
-            {
-                Debug.Log("\t\t\t" + pair.Key + "\t\t" + pair.Value);
-            }
+        //    foreach (KeyValuePair<EventType, Delegate> pair in eventTable)
+        //    {
+        //        Debug.Log("\t\t\t" + pair.Key + "\t\t" + pair.Value);
+        //    }
 
-            Debug.Log("\n");
-        }
+        //    Debug.Log("\n");
+        //}
         #endregion
 
         #region Message logging and exception throwing
@@ -425,20 +427,5 @@ namespace GameWarriors.EventDomain.Core
             }
         }
         #endregion
-    }
-
-    //This manager will ensure that the messenger's eventTable will be cleaned up upon loading of a new level.
-    public sealed class MessengerHelper : MonoBehaviour
-    {
-        void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-
-        //Clean up eventTable every time a new level loads.
-        public void OnLevelWasLoaded<T>(int unused, Messenger<T> messenger)
-        {
-            messenger.Cleanup();
-        }
     }
 }
